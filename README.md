@@ -6,7 +6,7 @@
  To install the app, follow these steps:
  - Download and install Docker Desktop (https://www.docker.com/get-started) for Windows. You will need to restart at least once, twice if the installation asks you to also install the Windows Subsystem for Linux update package.
  - Once Docker Desktop is installed, checkout the repo to your local machine.
- - Open a Windows Command Prompt (not Powershell, good old CMD).
+ - Open a Windows Command Prompt (not Powershell, good old CMD) and navigate to where you checked out the code to.
  - Input the following command to build the container:
     - docker build -t fetch_rewards_test_app .
 - Input the following command to start the container:
