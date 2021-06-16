@@ -4,6 +4,11 @@ let pointsList = new Map();
 exports.add_points = function(req, res) {
     let transaction = req.body;
 
+    let date = Date.parse(transaction["timestamp"]);
+    if (date === NaN) {
+        res.send("Invalid date: " + transaction["timestamp"]);
+    }
+
     //Store the transaction
     transactions.push(transaction);
 
@@ -76,9 +81,11 @@ exports.spend_points = function(req, res) {
         }
 
         let points = transaction["points"];
+
         //Points spending logic
         if (pointsList.get(payer) - points >= 0) {
-            //If we have points available from the current payer, use the value of the transaction
+            //If using the points from this transaction will not cause
+            //the payer to go negative, use the value of the transaction
             if(pointsSpent + points > pointsToSpend) {
                 //If this transaction puts us over the points we want to spend
                 //update the transaction record and only use the neccessary points
@@ -87,13 +94,17 @@ exports.spend_points = function(req, res) {
                 transaction["points"] -= points;
             } else {
                 //Otherwise, just use all points from this transaction and
-                //remove it from the array
-                //transactions.shift();
+                //set its points value to 0 to indicate that this
+                //transaction has been used to spend points and will be
+                //skipped in subsequent spends
                 transactions[transactions.indexOf(transaction)] = 
                     {"payer": payer, "points": 0, "timestamp": transaction["timestamp"]};
-                pointsSpent += points;
+                
+                    pointsSpent += points;
             }
 
+            //Save/Update our payers list
+            //(turn numbers negative to indicate spend)
             payers.set(payer, 
                 payers.has(payer) ? 
                 ((payers.get(payer) * -1) + points) * -1 
@@ -102,6 +113,9 @@ exports.spend_points = function(req, res) {
             //Update running totals
             pointsList.set(payer, pointsList.get(payer) - points);
         } else {
+            //If the current transaction's payer has no points available
+            //to spend, skip the transaction as we may have encountered
+            //an error state or some other issue.
             continue;
         }
     }
