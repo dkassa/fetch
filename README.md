@@ -21,11 +21,11 @@ Once you verify the container is up and running, the following are instructions 
     - /points/list -> List all points balances by payer
     - /points/clear -> Clears the points balances and list of transactions to start fresh so you don't have to restart the docker container to begin with a fresh slate
 - To add points, run the following command:
-    - curl -X POST http://localhost:3000/points/add --header "Content-Type: application/json" -d "{\"payer\": \"PAYER NAME HERE\", \"points\": POINTS VALUE HERE, \"timestamp\": \"TIMESTAMP HERE\"}"
+    - curl -X POST http://localhost:3000/points/add --header "Content-Type: application/json" -d "{\\"payer\\": \\"PAYER NAME HERE\\", \\"points\\": POINTS VALUE HERE, \\"timestamp\\": \\"TIMESTAMP HERE\\"}"
     - NOTE: The timestamp must be in the format of "YYYY-MM-DDTHH24:MM:SSZ"
     - NOTE: For any commands where you send data, you must escape the inner quotes for the JSON data (the \\" in the format above) as Windows doesn't accept nested double quotes.
 - To spend points, run the following command:
-    - curl -X POST http://localhost:3000/points/spend --header "Content-Type: application/json" -d "{\"points\": POINTS VALUE HERE}"
+    - curl -X POST http://localhost:3000/points/spend --header "Content-Type: application/json" -d "{\\"points\\": POINTS VALUE HERE}"
 - To list all points balances by payer, run the following command:
     - curl http://localhost:3000/points/list
 - To clear the points values to start fresh, run the following command:
