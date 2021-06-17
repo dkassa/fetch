@@ -9,6 +9,10 @@ exports.add_points = function(req, res) {
         res.send("Invalid date: " + transaction["timestamp"]);
     }
 
+    if (isNaN(transaction["points"])) {
+        res.send("Points must be a number.");
+    }
+
     //Store the transaction
     transactions.push(transaction);
 
@@ -44,7 +48,7 @@ exports.add_points = function(req, res) {
 exports.spend_points = function(req, res) {
     let pointsToSpend = req.body["points"];
 
-    if (pointsToSpend <= 0) {
+    if (pointsToSpend <= 0 || isNaN(pointsToSpend)) {
         res.send("Points to spend must be a positive number.");
     }
 
@@ -52,8 +56,6 @@ exports.spend_points = function(req, res) {
     pointsList.forEach(points => {
         totalPointsAvailable += points;
     });
-
-    console.log(totalPointsAvailable);
 
     if (totalPointsAvailable < pointsToSpend) {
         res.send("Insufficient points balance. Points balance: " + totalPointsAvailable);
@@ -100,7 +102,7 @@ exports.spend_points = function(req, res) {
                 transactions[transactions.indexOf(transaction)] = 
                     {"payer": payer, "points": 0, "timestamp": transaction["timestamp"]};
                 
-                    pointsSpent += points;
+                pointsSpent += points;
             }
 
             //Save/Update our payers list
