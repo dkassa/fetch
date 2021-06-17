@@ -14,4 +14,7 @@ router.post('/spend', pointsController.spend_points);
 //GET request for getting list of points balances
 router.get('/list', pointsController.get_points);
 
+//GET request for clearing points
+router.get('/clear', pointsController.clear_points);
+
 module.exports = router;

@@ -126,3 +126,10 @@ exports.spend_points = function(req, res) {
 exports.get_points = function(req, res) {
     res.json(JSON.stringify(Object.fromEntries(pointsList.entries())));
 };
+
+exports.clear_points = function(req, res) {
+    transactions = new Array();
+    pointsList.clear();
+
+    res.send("Points cleared!");
+};
